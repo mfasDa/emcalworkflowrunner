@@ -1,4 +1,4 @@
-# /usr/bin/env python3 
+#! /usr/bin/env python3
 
 import argparse
 import os
@@ -93,7 +93,7 @@ class RawReader:
         self.__loop = loop
         self.__delay = delay
         self.__shmSegmentSize = shmSegmentSize
- 
+
     def run(self):
         cmd = "o2-raw-file-reader-workflow"
         if self.__batchmode:
@@ -140,4 +140,4 @@ if __name__ == "__main__":
 
     runner = RawReader(rawcfgfile, channel, batchmode=args.batchmode)
     runner.run()
-    
+
