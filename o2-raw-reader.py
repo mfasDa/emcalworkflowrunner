@@ -2,7 +2,10 @@
 
 import argparse
 import os
+import signal
 import subprocess
+import sys
+import time
 
 from o2framework.FairMQChannel import FairMQChannel
 
@@ -106,7 +109,23 @@ class RawReader:
         cmd += " --raw-channel-config \"{}\"".format(self.__channel)
         cmd += " --shm-segment-size {}".format(self.__shmSegmentSize)
         print("Running command: {}".format(cmd))
-        subprocess.call(cmd, shell=True)
+
+        with subprocess.Popen(cmd, stdout=sys.stdout, stderr=subprocess.STDOUT, shell=True) as runner:
+            try:
+                while True:
+                    #print(runner.stdout.read())
+                    ...
+            except KeyboardInterrupt:
+                print("Sending kill to the child process")
+                runner.kill()
+                time.sleep(5)
+                print("Done")
+        with subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True) as runner:
+            try:
+                print(runner.stdout)     
+            except KeyboardInterrupt:
+                print("Sending kill to the child process")
+                runner.kill()
 
 if __name__ == "__main__":
     print("In main")
