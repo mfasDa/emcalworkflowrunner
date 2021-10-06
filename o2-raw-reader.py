@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import signal
 import subprocess
 import sys
 import time
@@ -145,6 +144,9 @@ if __name__ == "__main__":
         channel.name = args.fmqname
     if len(args.fmqaddress):
         channel.addresss = args.fmqaddress
+    else:
+        channel.addresss = "ipc:///tmp/readout-pipe-{}".format(os.getuid())
+        print("Using address {}".format(channel.addresss))
     if len(args.fmqtransport):
         channel.transport = args.fmqtransport
 
